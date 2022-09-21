@@ -79,7 +79,7 @@ exports.createUser = async (req,res,next) => {
             from:'Ralfi',
             to:req.body.email,
             subject:"Link aktivasi akun",
-            html:`<p>Silahkan klik link untuk aktivasi akun, Ini hanya link contoh ke client side</p><p>${process.env.CLIENT_URL}/reset-password/${token}</p>`
+            html:`<p>Silahkan klik link untuk aktivasi akun, Ini hanya link contoh ke client side</p><p>${process.env.CLIENT_URL}/aktivasi/${token}</p>`
         }
         let transporter = nodemailer.createTransport({
             host: "smtp.gmail.com",

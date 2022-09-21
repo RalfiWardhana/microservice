@@ -63,7 +63,7 @@ exports.createUser = async (req,res,next) => {
         obj.last_name = req.body.last_name
         obj.email = req.body.email
         obj.password = hashPassword
-        obj.isActive = false
+        obj.isActive = true
         obj.role = "user"
         obj.about = req.body.about
         obj.photo = req.files[0].filename

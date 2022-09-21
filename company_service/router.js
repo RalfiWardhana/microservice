@@ -11,7 +11,7 @@ router.route("/company-add").post(verifyJwt, upload_logo.any('photo'),company.cr
 router.route("/company/list").get(verifyJwt,company.companysList)
 router.route("/company/:id").get(verifyJwt,company.companyOne)
 router.route("/company-update/:id").put(verifyCompany, upload_logo.any('photo'),company.updatecompany)
-router.route("/company-delete/:id").delete(verifyAdmin, company.deletecompany)
+router.route("/company-delete/:id").delete( company.deletecompany)
 
 //jobs
 router.route("/jobs-add").post(verifyJwt,jobs.createjob)

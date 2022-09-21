@@ -9,7 +9,6 @@ dotenv.config()
 exports.usersList = async (req,res,next) => {
     try {
         let findAll = await repositoryUser.usersList()
-        console.log(req.user)
        
         if(!findAll){
             return res.status(500).json({
@@ -56,7 +55,7 @@ exports.userOne = async (req,res,next) => {
 exports.createUser = async (req,res,next) => {
     try {
         let findEmail = await repositoryUser.userByEmail(req.body.email)
-        console.log(findEmail)
+
         if(findEmail){
             return res.status(400).json({
                 message:"e-mail already registered",
@@ -210,14 +209,14 @@ exports.login = async (req, res) => {
 exports.verificationUser = async(req,res,next) => {
     try {
         token = req.params.token
-        console.log(token)
+      
         JWT.verify(token, process.env.JWT_SEC, function(err, user) {
             if(err) res.status(403).json({
                 status:401,
                 message: "token invalid"
             })
             req.user = user
-            console.log(user)
+            
           })
     
         let find = await repositoryUser.userByEmailAndPassword(req.user.email, req.user.password)

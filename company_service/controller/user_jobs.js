@@ -53,6 +53,24 @@ exports.createuser_job = async (req, res, next) => {
                 message: "Unauthorization you can't access, because this is not FOR your account"
             })
         }
+
+        let getResume = await axios.get("http://localhost:5000/api/resumes/list/for-update-user-jobs", { responseType: "json" })
+
+        let resultResume = getResume.data.data
+        let user_id_resume = []
+
+        resultResume.map((data) => {
+            user_id_resume.push(data.user_id)
+        })
+       
+        if (user_id_resume.includes(req.user.id) == false) {
+         
+            return res.status(400).json({
+                message: "You don't have a resume, please upload it first",
+                status: 400
+            })
+        }
+
         
         let obj = {}
 

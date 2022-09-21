@@ -58,6 +58,19 @@ exports.createcompany = async (req, res, next) => {
                 message: "Unauthorization you can't access, because this is not FOR your account"
             })
            }
+        let checkCompany = await repositoryCompany.companysList()
+        let user_id_company = []
+
+        checkCompany.map((data) => {
+            user_id_company.push(data.user_access)
+        })
+
+        if (user_id_company.includes(req.user.id) == true) {     
+            return res.status(400).json({
+                message: "You have already created a company",
+                status: 400
+            })
+        }
         let obj = {}
 
         obj.nama = req.body.nama

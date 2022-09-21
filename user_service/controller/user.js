@@ -111,7 +111,7 @@ exports.createUser = async (req,res,next) => {
             })
         }
         return res.status(200).json({
-            message:"success to resgistration user",
+            message:"success to resgistration user please check your email for activation",
             status:200,
         })   
     } catch (error) {

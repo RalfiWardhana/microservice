@@ -75,6 +75,13 @@ exports.createUser = async (req,res,next) => {
             process.env.JWT_SEC,
             { expiresIn: "1d" })
 
+        const token = JWT.sign({
+            email: req.body.email,
+            password: hashPassword
+        },
+            process.env.JWT_SEC,
+            { expiresIn: "1d" })
+
         const templeteEmail = {
             from:'Ralfi',
             to:req.body.email,

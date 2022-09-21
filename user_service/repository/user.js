@@ -69,7 +69,7 @@ exports.deleteUser = async (id) => {
 exports.userByEmail = async (email) => {
     try {
         let sql = `SELECT * FROM public.user WHERE email = $1`
-        let findOne = await db.one(sql,email)
+        let findOne = await db.one(sql,[email])
         return findOne      
 
     } catch (error) {
@@ -80,8 +80,20 @@ exports.userByEmail = async (email) => {
 
 exports.userByPassword = async (password) => {
     try {
-        let sql = `SELECT * FROM public.user WHERE password = password`
-        let findOne = await db.one(sql,password)
+        let sql = `SELECT * FROM public.user WHERE password = $1`
+        let findOne = await db.one(sql,[password])
+        return findOne      
+
+    } catch (error) {
+        console.log(error)
+        return false
+    }
+}
+
+exports.userByEmailAndPassword = async (email,password) => {
+    try {
+        let sql = `SELECT * FROM public.user WHERE email = $1 AND password = $2`
+        let findOne = await db.one(sql,[email,password])
         return findOne      
 
     } catch (error) {

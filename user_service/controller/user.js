@@ -55,6 +55,15 @@ exports.userOne = async (req,res,next) => {
 
 exports.createUser = async (req,res,next) => {
     try {
+        let findEmail = await repositoryUser.userByEmail(req.body.email)
+        console.log(findEmail)
+        if(findEmail){
+            return res.status(400).json({
+                message:"e-mail already registered",
+                status:400
+            })
+        }   
+
         let obj = {}
 
         const hashPassword = CryptoJS.AES.encrypt(req.body.password, process.env.PASS_SEC).toString()
@@ -63,17 +72,10 @@ exports.createUser = async (req,res,next) => {
         obj.last_name = req.body.last_name
         obj.email = req.body.email
         obj.password = hashPassword
-        obj.isActive = true
+        obj.isActive = false
         obj.role = "user"
         obj.about = req.body.about
         obj.photo = req.files[0].filename
-        
-        const token = JWT.sign({
-            email: req.body.email,
-            password: hashPassword
-        },
-            process.env.JWT_SEC,
-            { expiresIn: "1d" })
 
         const token = JWT.sign({
             email: req.body.email,
@@ -86,7 +88,7 @@ exports.createUser = async (req,res,next) => {
             from:'Ralfi',
             to:req.body.email,
             subject:"Link aktivasi akun",
-            html:`<p>Silahkan klik link untuk aktivasi akun, Ini hanya link contoh ke client side</p><p>${process.env.CLIENT_URL}/aktivasi/${token}</p>`
+            html:`<p>Silahkan klik link untuk aktivasi akun</p><p>${process.env.CLIENT_URL}/api/aktivasi/${token}</p>`
         }
         let transporter = nodemailer.createTransport({
             host: "smtp.gmail.com",
@@ -199,6 +201,50 @@ exports.login = async (req, res) => {
         const { password, ...other } = dataUser
 
         res.status(200).json({ ...other, token })
+    } catch (err) {
+        console.log(err)
+        return next(new CustomError('Something went wrong, please try again later!', 500))
+    }
+}
+
+exports.verificationUser = async(req,res,next) => {
+    try {
+        token = req.params.token
+        console.log(token)
+        JWT.verify(token, process.env.JWT_SEC, function(err, user) {
+            if(err) res.status(403).json({
+                status:401,
+                message: "token invalid"
+            })
+            req.user = user
+            console.log(user)
+          })
+    
+        let find = await repositoryUser.userByEmailAndPassword(req.user.email, req.user.password)
+
+        let obj = {}
+        obj.first_name = find.first_name 
+        obj.last_name = find.last_name
+        obj.email = find.email
+        obj.password = find.password
+        obj.isActive = true
+        obj.role = find.role
+        obj.about = find.about
+        obj.photo = find.photo
+        let id = find.id
+
+        let update = await repositoryUser.updateUser(obj,id)
+        if(!update){
+            return res.status(500).json({
+                message:"database error",
+                status:500
+            })
+        }
+        res.status(200).json({
+            message:"success activation user"
+        })
+        
+
     } catch (err) {
         console.log(err)
         return next(new CustomError('Something went wrong, please try again later!', 500))

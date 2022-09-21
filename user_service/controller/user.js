@@ -67,6 +67,13 @@ exports.createUser = async (req,res,next) => {
         obj.role = "user"
         obj.about = req.body.about
         obj.photo = req.files[0].filename
+        
+        const token = JWT.sign({
+            email: req.body.email,
+            password: hashPassword
+        },
+            process.env.JWT_SEC,
+            { expiresIn: "1d" })
 
         const templeteEmail = {
             from:'Ralfi',

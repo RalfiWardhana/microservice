@@ -1,0 +1,37 @@
+1.)  Microservices are an architectural style that structure applications as a collection of loosely connected services,
+     making it easier for developers to build and scale apps. Microservices architectures make applications easier to scale 
+     and faster to develop, enabling innovation and accelerating time-to-market for new features.
+
+2.)  Microservices bring multiple benefits:
+     - Scalability   
+     - Faster development
+     - Improved data security
+     - Better data governance
+     - The opportunity to become language and technology agnostic
+
+3.) Advantages:
+
+     - Scalability
+     - Use of containers, allowing for a quick deployment and development of the application
+     - Developer freedom to develop and deploy services independently
+     - Minimal work team
+     - Modular functionality, independent modules.
+
+    Disadvantages:
+
+     - Developer need to solve problems such as network latency or load balancing
+     - Complexity of managing a large number of services
+     - High memory use     
+     - Time required to fragment different microservices
+     - Complex testing over the distributed deployment
+
+4.) Back End
+    - The time to fetching data jobstreet is faster than glints, this is because the possibility of glints data is greater
+      so that there are quite a lot of SQL table joins compared to jobstreet,
+    - When i see from the chome tools, Jobstreet Network may still use the MVC concept with PHP language which does not separate the front end and back end, 
+      it can be seen from the small number of fetching APIs and there is a dot php extension in the url link. While glints a lot of fetching API services.
+
+     Front End
+    - Glints has more features than jobstreet such as a more complete job search filter
+    - From pagination glints is better because it only needs scrolling to fetch data on the next page, 
+      while jobstreet has to click the page button you want to go to
